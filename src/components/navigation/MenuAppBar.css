@@ -1,0 +1,75 @@
+.appBar{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.grow{
+    flex-grow: 0;
+}
+
+.linkAppBarLogo{
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+}
+
+.mr{
+    margin-right: 3px;
+}
+
+.buttonIcon{
+    font-size: 14px;
+    padding: 0;
+}
+
+.linkAppBarDesktop{
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.list{
+    width: 250px;
+}
+
+.listItem{
+    padding: 0;
+
+}
+
+.linkAppBarMobile{
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 16px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.listItemIcon{
+    min-width: 35px;
+}
+
+.sectionDesktop{
+    display: none;
+}
+
+.sectionMobile{
+    display: flex;
+    flex-grow: 1;
+}
+
+@media screen and (min-width: 960px) {
+    .grow{
+        flex-grow: 1;
+    }
+    .sectionDesktop{
+        display: flex;
+    }
+    .sectionMobile{
+        display: none;
+    }
+}

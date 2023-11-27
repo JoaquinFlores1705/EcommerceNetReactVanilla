@@ -1,4 +1,5 @@
-import { Avatar, Button, Card, Container, Grid, Icon, Link, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Login = () =>{
     
@@ -40,7 +41,7 @@ const Login = () =>{
                                 </Grid>
                             </Grid>
                             <Link
-                                href="/"
+                                to="/register"
                                 variant="body1"
                                 className="link"
                             >

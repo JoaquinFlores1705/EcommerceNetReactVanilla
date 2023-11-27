@@ -1,3 +1,6 @@
+body{
+  margin: 0;
+}
 
 .container-mt{
   margin-top: 30px;
@@ -27,4 +30,9 @@
 }
 .link{
   margin-top: 8px !important;
+  font-size: 1rem;
+  font-family: 'Roboto';
+  line-height: 1.5;
+  color: #0f80aa;
+  text-decoration: none;
 }

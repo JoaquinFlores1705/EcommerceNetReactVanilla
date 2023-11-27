@@ -1,4 +1,5 @@
-import { Avatar, Button, Card, Container, Grid, Icon, Link, TextField, Typography } from "@mui/material"
+import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } from "@mui/material"
+import { Link } from "react-router-dom";
 
 const RegisterUser = ()=> {
     return(
@@ -53,7 +54,7 @@ const RegisterUser = ()=> {
                                 </Grid>
                             </Grid>
                             <Link
-                            href="/"
+                            to="/login"
                             variant="body1"
                             className="link"
                             >
