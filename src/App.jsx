@@ -5,6 +5,7 @@ import RegisterUser from './components/security/RegisterUser'
 import MenuAppBar from './components/navigation/MenuAppBar'
 import theme from './theme/theme';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Book from './components/pages/Book';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<RegisterUser />} />
+          <Route path='/' element={<Book />} />
         </Routes>
       </Router>
     </ThemeProvider>
