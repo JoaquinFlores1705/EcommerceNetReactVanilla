@@ -1,0 +1,16 @@
+
+.media{
+    height: 250px;
+    background-color: #f2f2f2;
+    margin: 15px 15px 0 15px;
+}
+.price{
+    float: right;
+    padding: 0 20px 0 20px;
+    background-color: #0f80aa;
+}
+.text_card{
+    font-weight: bold;
+    color: #656565;
+    margin-bottom: 8px;
+}

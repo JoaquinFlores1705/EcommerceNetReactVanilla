@@ -1,0 +1,16 @@
+.text_shipment{
+    line-height: 3;
+    
+}
+.alertNotDelivered{
+    margin-top: 5px;
+    padding: 15px 15px 15px 15px;
+    margin-bottom: 20px;
+    background-color: #ffcccc;
+}
+.alertDelivered{
+    margin-top: 5px;
+    padding: 15px 15px 15px 15px;
+    margin-bottom: 20px;
+    background-color: #d6f5d6;
+}

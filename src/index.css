@@ -36,3 +36,24 @@ body{
   color: #0f80aa;
   text-decoration: none;
 }
+.text_title{
+  font-weight: 600;
+  color: #494949;
+  margin-bottom: 10px;
+}
+.text_detail{
+  font-weight: 500;
+  color: #494949;
+  margin-bottom: 5px;
+}
+.papper_padding{
+  padding: 20px;
+}
+
+.divider{
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.table{
+  border: 1px  solid #e0e0e0;
+}

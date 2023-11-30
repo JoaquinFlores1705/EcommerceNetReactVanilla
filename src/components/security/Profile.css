@@ -1,0 +1,36 @@
+.image-img{
+    object-fit: cover;
+    width: 100%;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: #0f80aa;
+}
+.image-item{
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -25px auto 15px;
+    
+}
+.image-button-item{
+    border-radius: 50%;
+    position: absolute;
+    padding: 10px;
+    margin: 0;
+    bottom: -3px;
+    right: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.iconDelivered{
+    color: green;
+    font-weight: 900;
+}
+.iconNotDelivered{
+    color: red;
+    font-weight: 900;
+}
