@@ -2,6 +2,9 @@ import { useState } from 'react'
 import './MenuAppBar.css'
 import { AppBar, Button, Container, Icon, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import { Link } from "react-router-dom";
+import ClientMenu from './desktop/ClientMenu';
+import AdminMenu from './desktop/AdminMenu';
+import MobileMenu from './mobile/MobileMenu';
 
 const MenuAppBar = () =>{
     const [open, setOpen] = useState(false);
@@ -30,7 +33,7 @@ const MenuAppBar = () =>{
                         >
                             <div className='list'>
                                 <List>
-                                    <ListItem button className='listItem' onClick={closeToggle}>
+                                    {/*<ListItem button className='listItem' onClick={closeToggle}>
                                         <Link to="/login" color="inherit" underline='none' className='linkAppBarMobile'>
                                             <ListItemIcon className='listItemIcon'>
                                                 <Icon>person</Icon>
@@ -39,7 +42,8 @@ const MenuAppBar = () =>{
                                                 Login
                                             </ListItemText>
                                         </Link>
-                                    </ListItem>
+                                    </ListItem>*/}
+                                    <MobileMenu clickHandler={closeToggle} />
                                 </List>
                             </div>
 
@@ -51,12 +55,14 @@ const MenuAppBar = () =>{
                             </Link>
                         </div>
                         <div className='sectionDesktop'>
-                            <Button color="inherit" className='buttonIcon'>
+                            {/*<Button color="inherit" className='buttonIcon'>
                                 <Link to="/login" color="inherit" className='linkAppBarDesktop' underline='none'>
                                     <Icon className='mr'>person</Icon>
                                     Login
                                 </Link>
-                            </Button>
+                            </Button>*/}
+                            <ClientMenu />
+                            <AdminMenu />
                         </div>
                     </Toolbar>
                 </Container>
