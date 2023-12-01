@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import ClientMenu from './desktop/ClientMenu';
 import AdminMenu from './desktop/AdminMenu';
 import MobileMenu from './mobile/MobileMenu';
+import MobileMenuPublic from './mobile/MobileMenuPublic';
+import PublicMenu from './desktop/PublicMenu';
 
 const MenuAppBar = () =>{
     const [open, setOpen] = useState(false);
@@ -33,16 +35,7 @@ const MenuAppBar = () =>{
                         >
                             <div className='list'>
                                 <List>
-                                    {/*<ListItem button className='listItem' onClick={closeToggle}>
-                                        <Link to="/login" color="inherit" underline='none' className='linkAppBarMobile'>
-                                            <ListItemIcon className='listItemIcon'>
-                                                <Icon>person</Icon>
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                Login
-                                            </ListItemText>
-                                        </Link>
-                                    </ListItem>*/}
+                                    {/*<MobileMenuPublic clickHandler={closeToggle}/>*/}
                                     <MobileMenu clickHandler={closeToggle} />
                                 </List>
                             </div>
@@ -55,12 +48,7 @@ const MenuAppBar = () =>{
                             </Link>
                         </div>
                         <div className='sectionDesktop'>
-                            {/*<Button color="inherit" className='buttonIcon'>
-                                <Link to="/login" color="inherit" className='linkAppBarDesktop' underline='none'>
-                                    <Icon className='mr'>person</Icon>
-                                    Login
-                                </Link>
-                            </Button>*/}
+                            {/*<PublicMenu />*/}
                             <ClientMenu />
                             <AdminMenu />
                         </div>

@@ -1,6 +1,14 @@
 import { Button, Container, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { useNavigate } from "react-router-dom";
 
 const ProductsOrderList = () =>{
+
+    const navigation = useNavigate()
+
+    const showDetails = () =>{
+        const id = "1";
+        navigation(`/purchaseOrder/${id}`)
+    }
     
     return (
         <Container className="container-mt">
@@ -34,6 +42,7 @@ const ProductsOrderList = () =>{
                                 <Button
                                 variant="contained"
                                 color="inherit"
+                                onClick={showDetails}
                                 >
                                     Detalles
                                 </Button>
@@ -52,6 +61,7 @@ const ProductsOrderList = () =>{
                                 <Button
                                 variant="contained"
                                 color="inherit"
+                                onClick={showDetails}
                                 >
                                     Detalles
                                 </Button>

@@ -5,7 +5,7 @@ import './PurchaseOrder.css'
 const PurchaseOrder = () =>{
 
     const params = useParams()
-    const messageShipment = "Entregado 2020-12-26";
+    const messageShipment = "No entregado";
     const messagePay = "Pagado en 2020-12-23";
 
     return (
@@ -27,7 +27,7 @@ const PurchaseOrder = () =>{
                     <Typography variant="body2" className="text_shipment">
                         Direccion: Calle, cali
                     </Typography>
-                    <div className="alertDelivered">
+                    <div className="alertNotDelivered">
                         <Typography variant="body2" className="text_title">
                             {messageShipment}
                         </Typography>
@@ -135,7 +135,8 @@ const PurchaseOrder = () =>{
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}>
-                                        <Button
+                                        {/* Boton para el usuario */}
+                                        {/*<Button
                                         variant="contained"
                                         color="primary"
                                         size="large"
@@ -151,6 +152,15 @@ const PurchaseOrder = () =>{
                                         fullWidth
                                         >
                                             Tarjeta de Credito o Debito
+                                        </Button> */}
+                                        {/* boton para el admin */}
+                                        <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        fullWidth
+                                        >
+                                            Marcar como entregado
                                         </Button>
                                     </TableCell>
                                 </TableRow>

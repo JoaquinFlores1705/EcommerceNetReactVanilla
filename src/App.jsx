@@ -31,7 +31,6 @@ function App() {
           <Route path='/detailsProduct/:id' element={<DetailsProduct />} />
           <Route path='/cartshop' element={<CartShop />} />
           <Route path='/cartshopproccess' element={<ProcessShop />} />
-          <Route path='/cartshopproccess' element={<ProcessShop />} />
           <Route path='/purchaseOrder/:id' element={<PurchaseOrder />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/admin/users' element={<Users />} />
