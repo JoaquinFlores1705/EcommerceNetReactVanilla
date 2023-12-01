@@ -26,11 +26,3 @@
     justify-content: center;
     align-items: center;
 }
-.iconDelivered{
-    color: green;
-    font-weight: 900;
-}
-.iconNotDelivered{
-    color: red;
-    font-weight: 900;
-}

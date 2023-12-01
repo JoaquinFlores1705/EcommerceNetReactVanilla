@@ -42,7 +42,7 @@ const AdminMenu = () =>{
                 <MenuItem className="list_item"
                 onClick={handleClose}
                 >
-                    <Link className="linkAppBarDesktop" to="/">
+                    <Link className="linkAppBarDesktop" to="/admin/users">
                         <ListItemIcon className="listItemIcon">
                             <Icon>group</Icon>
                         </ListItemIcon>
@@ -52,7 +52,7 @@ const AdminMenu = () =>{
                 <MenuItem className="list_item"
                 onClick={handleClose}
                 >
-                    <Link className="linkAppBarDesktop" to="/">
+                    <Link className="linkAppBarDesktop" to="/admin/productList">
                         <ListItemIcon className="listItemIcon">
                             <Icon>storefront</Icon>
                         </ListItemIcon>
@@ -62,7 +62,7 @@ const AdminMenu = () =>{
                 <MenuItem className="list_item"
                 onClick={handleClose}
                 >
-                    <Link className="linkAppBarDesktop" to="/">
+                    <Link className="linkAppBarDesktop" to="/admin/orderList">
                         <ListItemIcon className="listItemIcon">
                             <Icon>shopping_cart</Icon>
                         </ListItemIcon>

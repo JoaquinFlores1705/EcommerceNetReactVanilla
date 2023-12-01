@@ -83,7 +83,7 @@ const MobileMenu = (props) =>{
             >
                 <List disablePadding>
                     <ListItem button className="list_subitem" onClick={props.clickHandler} >
-                        <Link className="linkAppBarMobile" to="/">
+                        <Link className="linkAppBarMobile" to="/admin/users">
                             <ListItemIcon className="listItemIcon">
                                 <Icon>group</Icon>
                             </ListItemIcon>
@@ -91,7 +91,7 @@ const MobileMenu = (props) =>{
                         </Link>
                     </ListItem>
                     <ListItem button className="list_subitem" onClick={props.clickHandler}>
-                        <Link className="linkAppBarMobile" to="/">
+                        <Link className="linkAppBarMobile" to="/admin/productList">
                             <ListItemIcon className="listItemIcon">
                                 <Icon>storefront</Icon>
                             </ListItemIcon>
@@ -99,7 +99,7 @@ const MobileMenu = (props) =>{
                         </Link>
                     </ListItem>
                     <ListItem button className="list_subitem" onClick={props.clickHandler}>
-                        <Link className="linkAppBarMobile" to="/">
+                        <Link className="linkAppBarMobile" to="/admin/orderList">
                             <ListItemIcon className="listItemIcon">
                                 <Icon>shopping_cart</Icon>
                             </ListItemIcon>
@@ -111,7 +111,7 @@ const MobileMenu = (props) =>{
             </Collapse>
             {/* fin admin */}
             <ListItem button className="listItem" onClick={props.clickHandler}>
-                <Link className="linkAppBarMobile" to="/cartshop">
+                <Link className="linkAppBarMobile" to="/admin/orderList">
                     <ListItemIcon className="listItemIcon" >
                         <Icon>shopping_cart</Icon>
                     </ListItemIcon>

@@ -81,3 +81,36 @@ body{
   margin-right: 8px;
   background-color: #f2f2f2;
 }
+.iconDelivered{
+  color: green;
+  font-weight: 900;
+}
+.iconNotDelivered{
+  color: red;
+  font-weight: 900;
+}
+.checkBox{
+  display: block;
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.btnAdd{
+  float: right;
+}
+.avatar_product{
+  width: 175px !important;
+  height: 175px !important;
+  background-color: #f2f2f2 !important;
+}
+.image-upload-image{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 175px;
+}
+.btn-upload-image{
+  margin-top: 5px;
+}
