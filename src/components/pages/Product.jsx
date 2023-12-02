@@ -1,11 +1,44 @@
-import { Avatar, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardContent, CardMedia, Container, Grid, Pagination, Typography } from "@mui/material";
 import './Product.css'
-import { productsArray } from "../data/products";
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { getProducts } from "../../actions/ProductAction";
 
 const Product = () => {
 
-    const productsArrayD = productsArray
+    const [requestProducts, setRequestProducts] = useState({
+        pageIndex: 1,
+        pageSize: 2,
+        search: ''
+    })
+
+    const [paginatorProducts, setPaginatorProducts] = useState({
+        count:0,
+        pageIndex:0,
+        pageSize:0,
+        pageCount:0,
+        data: []
+    })
+
+    useEffect(() => {
+        const getListProducts = async () =>{
+            const response = await getProducts(requestProducts)
+            setPaginatorProducts(response.data)
+        }
+
+        getListProducts()
+    }, [requestProducts])
+
+    const handleChange = (event, value) => {
+        setRequestProducts( (ant) => ({
+            ...ant,
+            pageIndex: value
+        }))
+    }
+
+    if(!paginatorProducts.data){
+        return null;
+    }
 
     return (
         <Container className="container-mt">
@@ -13,8 +46,8 @@ const Product = () => {
                 Productos
             </Typography>
             <Grid container spacing={4}>
-                { productsArrayD.map(p => (
-                <Grid item lg={3} md={4} sm={6} xs={12} key={p.key}>
+                { paginatorProducts.data.map(p => (
+                <Grid item lg={3} md={4} sm={6} xs={12} key={p.id}>
                     <Card>
                         <CardMedia 
                         className="media"
@@ -27,9 +60,9 @@ const Product = () => {
                         </CardMedia>
                         <CardContent>
                             <Typography variant="h6" className="text_card">
-                                {p.title}
+                                {p.name}
                             </Typography>
-                            <Link to={`/detailsProduct/${p.key}`}>
+                            <Link to={`/detailsProduct/${p.id}`}>
                                 <Button
                                 variant="contained"
                                 color="primary"
@@ -43,6 +76,10 @@ const Product = () => {
                 </Grid>
                 )) }
             </Grid>
+            <Pagination count={paginatorProducts.pageCount} page={paginatorProducts.pageIndex}
+            onChange={handleChange} 
+            
+            />
         </Container>
     );
 }
