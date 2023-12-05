@@ -2,10 +2,12 @@ import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } fr
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../actions/UserAction";
+import { useStateValue } from "../../context/store";
 
 const Login = () =>{
 
     const navigation = useNavigate()
+    const [{sessionUser}, dispatch]= useStateValue();
 
     const [user, setUser] = useState({
        email: '',
@@ -26,7 +28,7 @@ const Login = () =>{
     }
 
     const loginEventUser = () =>{
-        loginUser(user).then(res => {
+        loginUser(user, dispatch).then(res => {
             if(res.status == 200){
                 window.localStorage.setItem('token', res.data.token);
                 console.log('Login Exitoso', res.data);

@@ -2,13 +2,14 @@ import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } fr
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../actions/UserAction";
+import { useStateValue } from "../../context/store";
 
 
 
 const RegisterUser = ()=> {
 
     const navigation = useNavigate()
-
+    const [{sessionUser}, dispatch]= useStateValue();
     const [user, setUser] = useState({
         name: '',
         lastname: '',
@@ -34,7 +35,7 @@ const RegisterUser = ()=> {
     }
 
     const saveUser = () => {
-        registerUser(user).then(response => {
+        registerUser(user,dispatch).then(response => {
             console.log("response User register:", response);
             window.localStorage.setItem('token', response.data.token);
             navigation(`/`);

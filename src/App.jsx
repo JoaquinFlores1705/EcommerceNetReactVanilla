@@ -19,15 +19,17 @@ import ProductEdit from './components/pages/admin/ProductEdit';
 import ProductsOrderList from './components/pages/admin/ProductsOrderList';
 import { useEffect, useState } from 'react';
 import { getUser } from './actions/UserAction';
+import { useStateValue } from './context/store';
 
 function App() {
 
+  const [{sessionUser}, dispatch]= useStateValue();
   const [serverRes, setServerResp] = useState(false);
 
 
   useEffect(() => {
     if(!serverRes){
-      getUser().then(res =>{
+      getUser(dispatch).then(res =>{
         setServerResp(true);
         console.log('estado session', res);
       });

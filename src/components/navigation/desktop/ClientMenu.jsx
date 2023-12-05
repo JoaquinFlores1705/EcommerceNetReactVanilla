@@ -1,8 +1,11 @@
 import { Avatar, Button, Icon, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { useStateValue } from "../../../context/store";
 
 const ClientMenu = () => {
+
+    const [{sessionUser}, dispatch]= useStateValue();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -30,7 +33,9 @@ const ClientMenu = () => {
                         <Avatar alt="mi imagen" className="avatar_profile_app_bar"
                         src="https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg"
                         />
-                        Paul Flores
+                        {sessionUser 
+                        ? (sessionUser.authenticated ? `${sessionUser.user.name} ${sessionUser.user.lastname}` : "No sesion")  
+                        : "No Sesion"}
                         <Icon>keyboard_arrow_down</Icon>
                     </div>
                 </Button>

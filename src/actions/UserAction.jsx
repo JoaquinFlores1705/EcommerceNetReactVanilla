@@ -5,10 +5,15 @@ const instance = axios.create();
 instance.CancelToken = axios.CancelToken;
 instance.isCancel = axios.isCancel;
 
-export const registerUser = user => {
+export const registerUser = (user,dispatch) => {
     return new Promise((resolve, eject) => {
         instance.post('/api/user/register', user).then(response => {
-            resolve(response)
+            dispatch({
+                type: "LOGIN",
+                session: response.data,
+                authenticated: true
+            });
+            resolve(response);
         })
         .catch( err => {
             resolve(err.response);
@@ -16,10 +21,15 @@ export const registerUser = user => {
     });
 }
 
-export const loginUser = user =>{
+export const loginUser = (user, dispatch) =>{
     return new Promise((resolve, eject) => {
         instance.post('/api/user/login', user).then(response => {
-            resolve(response)
+            dispatch({
+                type: "LOGIN",
+                session: response.data,
+                authenticated: true
+            });
+            resolve(response);
         })
         .catch( err => {
             resolve(err.response);
@@ -27,10 +37,15 @@ export const loginUser = user =>{
     });
 }
 
-export const getUser = () =>{
+export const getUser = (dispatch) =>{
     return new Promise((resolve, eject) => {
         HttpClient.get('/api/user').then(response => {
-            resolve(response)
+            dispatch({
+                type: "LOGIN",
+                session: response.data,
+                authenticated: true
+            });
+            resolve(response);
         })
         .catch( err => {
             resolve(err.response);
