@@ -1,23 +1,28 @@
 import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } from "@mui/material"
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../../actions/UserAction";
 
 
 
 const RegisterUser = ()=> {
 
+    const navigation = useNavigate()
+
     const [user, setUser] = useState({
         name: '',
-        surnames: '',
+        lastname: '',
         email: '',
-        password: ''
+        password: '',
+        username: ''
     })
 
     const clearUser = {
         name: '',
-        surnames: '',
+        lastname: '',
         email: '',
-        password: ''
+        password: '',
+        username: ''
     }
 
     const handleChange = (e) => {
@@ -29,8 +34,11 @@ const RegisterUser = ()=> {
     }
 
     const saveUser = () => {
-        console.log("User saved",user);
-        setUser(clearUser);
+        registerUser(user).then(response => {
+            console.log("response User register:", response);
+            window.localStorage.setItem('token', response.data.token);
+            navigation(`/`);
+        });
     }
 
     return(
@@ -59,8 +67,18 @@ const RegisterUser = ()=> {
                                         label="Apellidos"
                                         variant="outlined"
                                         fullWidth
-                                        name="surnames"
-                                        value={user.surnames}
+                                        name="lastname"
+                                        value={user.lastname}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item md={12} xs={12} className="grid-mb">
+                                    <TextField 
+                                        label="Username"
+                                        variant="outlined"
+                                        fullWidth
+                                        name="username"
+                                        value={user.username}
                                         onChange={handleChange}
                                     />
                                 </Grid>

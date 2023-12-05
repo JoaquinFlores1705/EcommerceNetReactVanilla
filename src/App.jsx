@@ -17,8 +17,22 @@ import ProductsList from './components/pages/admin/ProductsList';
 import ProductAdd from './components/pages/admin/ProductAdd';
 import ProductEdit from './components/pages/admin/ProductEdit';
 import ProductsOrderList from './components/pages/admin/ProductsOrderList';
+import { useEffect, useState } from 'react';
+import { getUser } from './actions/UserAction';
 
 function App() {
+
+  const [serverRes, setServerResp] = useState(false);
+
+
+  useEffect(() => {
+    if(!serverRes){
+      getUser().then(res =>{
+        setServerResp(true);
+        console.log('estado session', res);
+      });
+    }
+  }, [serverRes]);
 
   return (
     <ThemeProvider theme={theme}>
