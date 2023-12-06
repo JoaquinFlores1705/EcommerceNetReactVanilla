@@ -1,11 +1,18 @@
-import { Button, CardMedia, Container, Divider, Grid, Icon, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
+import { Button, CardMedia, Container, Divider, Grid, Icon, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { productsArray } from "../data/products";
 import './CartShop.css'
 import { Link } from "react-router-dom";
+import { useStateValue } from "../../context/store";
 
 const CartShop = () => {
 
-    const productsArrayD = productsArray;
+    const [{sessionShoppingCart}, dispatch] = useStateValue();
+
+    const productsArrayD = sessionShoppingCart ? sessionShoppingCart.items: [];
+    let sum = 0;
+    productsArrayD.forEach(p => {
+        sum += p.price
+    });
 
     return (
         <Container className="container-mt">
@@ -18,17 +25,17 @@ const CartShop = () => {
                         <Table>
                             <TableBody>
                                 { productsArrayD.map( p => (
-                                    <TableRow key={p.key}>
+                                    <TableRow key={p.id}>
                                         <TableCell>
                                             <CardMedia 
                                             className="imgProductCC"
                                             image="https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg"
-                                            title="Imagen en carrito"
+                                            title={p.product}
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <Typography className="text_detail">
-                                                {p.title}
+                                                {p.product}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
@@ -37,17 +44,9 @@ const CartShop = () => {
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <TextField
-                                            select
-                                            variant="outlined"
-                                            size="small"
-                                            >
-                                                <MenuItem value={1}>1</MenuItem>
-                                                <MenuItem value={2}>2</MenuItem>
-                                                <MenuItem value={3}>3</MenuItem>
-                                                <MenuItem value={4}>4</MenuItem>
-                                                <MenuItem value={5}>5</MenuItem>
-                                            </TextField>
+                                            <Typography className="text_detail">
+                                                ${p.amount}
+                                            </Typography>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton>
@@ -66,7 +65,7 @@ const CartShop = () => {
                             Subtotal ({productsArrayD.length}) Productos
                         </Typography>
                         <Typography className="text_title">
-                            $143.66
+                            ${Math.round(sum * 100) /100}
                         </Typography>
                         <Divider className="grid-mb" />
                         <Link to={`/cartshopproccess`}>

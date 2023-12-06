@@ -76,9 +76,8 @@ const Product = () => {
                 </Grid>
                 )) }
             </Grid>
-            <Pagination count={paginatorProducts.pageCount} page={paginatorProducts.pageIndex}
-            onChange={handleChange} 
-            
+            <Pagination className="pagination" count={paginatorProducts.pageCount} page={paginatorProducts.pageIndex}
+            onChange={handleChange}
             />
         </Container>
     );

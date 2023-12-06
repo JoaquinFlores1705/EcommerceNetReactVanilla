@@ -20,6 +20,8 @@ import ProductsOrderList from './components/pages/admin/ProductsOrderList';
 import { useEffect, useState } from 'react';
 import { getUser } from './actions/UserAction';
 import { useStateValue } from './context/store';
+import { getShoppingCart } from './actions/ShoppingCartAction';
+import {v4 as uuidv4} from 'uuid';
 
 function App() {
 
@@ -27,13 +29,25 @@ function App() {
   const [serverRes, setServerResp] = useState(false);
 
 
-  useEffect(() => {
-    if(!serverRes){
-      getUser(dispatch).then(res =>{
-        setServerResp(true);
-        console.log('estado session', res);
-      });
+  useEffect( () => {
+
+
+    async function fetchData(){
+      await getUser(dispatch);
+      await getShoppingCart(dispatch, shoppingCartId);
+
+      setServerResp(true);
     }
+
+    let shoppingCartId = window.localStorage.getItem("cart");
+    
+    if(!shoppingCartId){
+      shoppingCartId = uuidv4();
+      window.localStorage.setItem("cart", shoppingCartId);
+    }
+
+    fetchData();
+
   }, [serverRes]);
 
   return (

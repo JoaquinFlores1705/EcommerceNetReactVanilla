@@ -1,15 +1,62 @@
 import { Button, CardMedia, Container, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material"
 import './DetailsProduct.css'
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { getProduct } from "../../actions/ProductAction"
+import { addItem } from "../../actions/ShoppingCartAction"
+import { useStateValue } from "../../context/store"
 
-const DetailsProduct = (props) =>{
+const DetailsProduct = () =>{
 
-    
+    const params = useParams();
+
+    const [{sessionShoppingCart}, dispatch] = useStateValue();
+    const [amount, setAmount] = useState(1);
+    const navigation = useNavigate();
+    const [selectedProduct, setSelectedProduct] = useState({
+        id: 0,
+        name: "",
+        description: "",
+        stock: 0,
+        brandId: 0,
+        brandName: "",
+        categoryId: 0,
+        categoryName: "",
+        price: 0,
+        image: ""
+    });
+
+    useEffect(() => {
+        const id = params.id;
+        const getProductAsync = async () =>{
+            const response = await getProduct(id);
+            setSelectedProduct(response.data);
+        }
+
+        getProductAsync();
+
+    }, []);
+
+    const addCart = async () => {
+        const item = {
+            id: selectedProduct.id,
+            product: selectedProduct.name,
+            price: selectedProduct.price,
+            amount: amount,
+            image: selectedProduct.image,
+            brand: selectedProduct.brandName,
+            category: selectedProduct.categoryName
+        };
+
+        await addItem(sessionShoppingCart,item,dispatch);
+
+        navigation("/cartshop");
+    }
 
     return (
         <Container className="container-mt">
             <Typography variant="h4" className="text_title">
-                Producto
+                {selectedProduct.name}
             </Typography>
             <Grid container spacing={4}>
                 <Grid item lg={8} md={8} xs={12}>
@@ -17,7 +64,7 @@ const DetailsProduct = (props) =>{
                         <CardMedia 
                             className="media_detail"
                             image="https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg"
-                            title="Mi producto"
+                            title={selectedProduct.description}
                         />
                     </Paper>
                 </Grid>
@@ -33,7 +80,7 @@ const DetailsProduct = (props) =>{
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="subtitle2">
-                                            $25.99
+                                            {selectedProduct.price}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -44,34 +91,29 @@ const DetailsProduct = (props) =>{
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <TextField
-                                        size="small"
-                                        select
-                                        variant="outlined"
-                                        >
-                                            <MenuItem value={1}>
-                                                1
-                                            </MenuItem>
-                                            <MenuItem value={2}>
-                                                2
-                                            </MenuItem>
-                                            <MenuItem value={3}>
-                                                3
-                                            </MenuItem>
-                                        </TextField>
+                                        <TextField 
+                                            id="product-amount"
+                                            label=""
+                                            type="number"
+                                            value={amount}
+                                            onChange={e => setAmount(e.target.value)}
+                                            defaultValue={1}
+                                            InputLabelProps={{
+                                                shrink: true
+                                            }}
+                                        />
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}>
-                                        <Link to={`/cartshop`}>
-                                            <Button
-                                            variant="contained"
-                                            color="primary"
-                                            size="large"
-                                            >
-                                                Agregar a carrito
-                                            </Button>
-                                        </Link>
+                                        <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        onClick={addCart}
+                                        >
+                                            Agregar a carrito
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -82,16 +124,16 @@ const DetailsProduct = (props) =>{
                     <Grid container spacing={2}>
                         <Grid item md={6}>
                             <Typography className="text_detail">
-                                Precio: 25.99
+                                Precio: {selectedProduct.price}
                             </Typography>
                             <Typography className="text_detail">
-                                Unidades Disponible: 15
+                                Unidades Disponible: {selectedProduct.stock}
                             </Typography>
                             <Typography className="text_detail">
-                                Marca: Marx
+                                Marca: {selectedProduct.brandName}
                             </Typography>
                             <Typography className="text_detail">
-                                Temporada: Invierno
+                                Temporada: {selectedProduct.categoryName}
                             </Typography>
                         </Grid>
                         <Grid item md={6}>
@@ -99,7 +141,7 @@ const DetailsProduct = (props) =>{
                                 Descripcion:
                             </Typography>
                             <Typography className="text_detail">
-                                Abrigo de invierno de temporada, totalmente olor a fresas
+                                {selectedProduct.description}
                             </Typography>
                         </Grid>
                     </Grid>

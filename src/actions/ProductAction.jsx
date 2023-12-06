@@ -12,3 +12,13 @@ export const getProducts = (request) => {
         })
     })
 }
+
+export const getProduct = (id) => {
+    return new Promise( (resolve, eject) => {
+        instance.get(`/api/product/${id}`).then(response => {
+            resolve(response);
+        }).catch( err => {
+            resolve(err.response);
+        });
+    })
+}
