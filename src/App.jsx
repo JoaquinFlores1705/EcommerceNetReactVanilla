@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@mui/material';
+import { Snackbar, ThemeProvider } from '@mui/material';
 import './App.css'
 import Login from './components/security/Login'
 import RegisterUser from './components/security/RegisterUser'
@@ -25,7 +25,7 @@ import {v4 as uuidv4} from 'uuid';
 
 function App() {
 
-  const [{sessionUser}, dispatch]= useStateValue();
+  const [{sessionUser, openSnackbar}, dispatch]= useStateValue();
   const [serverRes, setServerResp] = useState(false);
 
 
@@ -52,6 +52,28 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Snackbar
+      anchorOrigin={{vertical: "bottom", horizontal:"center"}}
+      open={openSnackbar ? openSnackbar.open : false}
+      autoHideDuration={3000}
+      ContentProps={{"aria-describedby" : "message-id"}}
+      message={
+        <span id='message-id'>
+          {openSnackbar ? openSnackbar.message : ""}
+        </span>
+      }
+      onClose={ () => 
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMessage: {
+            open: false,
+            message: ""
+          }
+        })
+      }
+      >
+
+      </Snackbar>
       <Router>
       <MenuAppBar />
         <Routes>
