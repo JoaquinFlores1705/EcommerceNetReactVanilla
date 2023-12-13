@@ -1,10 +1,12 @@
-import { Avatar, Button, Icon, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
+import { Avatar, Button, Icon, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useStateValue } from "../../../context/store";
 
 const ClientMenu = () => {
 
+    const imageDefault = "https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg";
+    const navigation = useNavigate()
     const [{sessionUser}, dispatch]= useStateValue();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -15,6 +17,18 @@ const ClientMenu = () => {
 
     const handleClose = (e) => {
         setAnchorEl(null)
+    }
+
+    const logout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        dispatch({
+            type: "LOGOUT",
+            newUser: null,
+            authenticated: false
+        });
+
+        navigation("/login");
     }
 
     return (
@@ -31,7 +45,11 @@ const ClientMenu = () => {
                 >
                     <div className="linkAppBarDesktop">
                         <Avatar alt="mi imagen" className="avatar_profile_app_bar"
-                        src="https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg"
+                        src={
+                            sessionUser
+                            ?  (sessionUser.user.image ? sessionUser.user.image : imageDefault)
+                            : imageDefault
+                        }
                         />
                         {sessionUser 
                         ? (sessionUser.authenticated ? `${sessionUser.user.name} ${sessionUser.user.lastname}` : "No sesion")  
@@ -71,7 +89,11 @@ const ClientMenu = () => {
                             <ListItemIcon className="listItemIcon">
                                 <Icon>exit_to_app</Icon>
                             </ListItemIcon>
-                            <ListItemText>Cerrar Sesion</ListItemText>
+
+                            <ListItem button onClick={logout}>
+                                <ListItemText>Cerrar Sesion</ListItemText>
+                            </ListItem>
+                            
                         </Link>
                     </MenuItem>
                 </Menu>
@@ -80,4 +102,4 @@ const ClientMenu = () => {
     )
 }
 
-export default ClientMenu
+export default ClientMenu;

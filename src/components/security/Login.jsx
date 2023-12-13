@@ -34,7 +34,15 @@ const Login = () =>{
                 console.log('Login Exitoso', res.data);
                 navigation(`/`);
             }else{
-                console.log('Las credenciales fueron erroneas', res.data);
+                
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    openMessage:{
+                        open: true,
+                        message: "El password o el email son incorrectos"
+                    }
+                })
+
             }
         })
     }

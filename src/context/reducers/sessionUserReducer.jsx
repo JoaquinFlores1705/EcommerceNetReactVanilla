@@ -1,9 +1,11 @@
 
 export const initialState = {
     user:{
+        id: "",
         name: "",
         lastname: "",
         email: "",
+        username:"",
         image: ""
     },
     authenticated: false

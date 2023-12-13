@@ -1,10 +1,14 @@
 import { Avatar, Collapse, Divider, Icon, List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import { useState } from "react"
 import './MobileMenu.css'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useStateValue } from "../../../context/store"
 
 const MobileMenu = (props) =>{
 
+    const imageDefault = "https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg";
+    const navigation = useNavigate()
+    const [{sessionUser}, dispatch]= useStateValue();
     const [openClient, setOpenCliente] = useState(false)
     const [openAdmin, setOpenAdmin] = useState(false)
 
@@ -14,6 +18,18 @@ const MobileMenu = (props) =>{
 
     const hadleClickAdmin = () => {
         setOpenAdmin(prev => !prev)
+    }
+
+    const logout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        dispatch({
+            type: "LOGOUT",
+            newUser: null,
+            authenticated: false
+        });
+
+        navigation("/login");
     }
 
     return (
@@ -26,9 +42,19 @@ const MobileMenu = (props) =>{
                     <Avatar 
                     alt="mi imagen"
                     className="avatar_profile_app_bar"
-                    src="https://cdn2.vectorstock.com/i/1000x1000/17/61/male-avatar-profile-picture-vector-10211761.jpg"
+                    src={
+                        sessionUser
+                        ? (sessionUser.user.image ? sessionUser.user.image : imageDefault)
+                        : imageDefault
+                    }
                     />
-                    <ListItemText>Paul Flores</ListItemText>
+                    <ListItemText>
+                        {
+                            sessionUser
+                            ? (sessionUser.authenticated ? `${sessionUser.user.name} ${sessionUser.user.lastname}` : "" )
+                            : "No sesion"
+                        }
+                    </ListItemText>
                     <Icon>keyboard_arrow_down</Icon>
                 </div>
             </ListItem>
@@ -52,7 +78,9 @@ const MobileMenu = (props) =>{
                             <ListItemIcon className="listItemIcon">
                                 <Icon>exit_to_app</Icon>
                             </ListItemIcon>
-                            <ListItemText>Cerrar Sesion</ListItemText>
+                            <ListItem button onClick={logout}>
+                                <ListItemText>Cerrar Sesion</ListItemText>
+                            </ListItem>
                         </Link>
                     </ListItem>
                     <Divider />

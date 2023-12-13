@@ -1,16 +1,48 @@
 import { Button, Container, Divider, Grid, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './Profile.css'
 import ImageUploading from 'react-images-uploading';
 import { useNavigate } from "react-router-dom"
+import { useStateValue } from "../../context/store";
+import {v4 as uuidv4} from "uuid";
+import { updateUser } from "../../actions/UserAction";
 
 const Profile = () =>{
 
+    const imageDefault = "https://www.maxphoto.co.uk/media/wysiwyg/help/Upload.png";
+    const [{sessionUser}, dispatch]= useStateValue();
+    const [user, setUser] = useState({
+        id: "",
+        name: "",
+        lastname: "",
+        email:"",
+        image:"",
+        password:"",
+        file:"",
+        imageTemp:""
+    });
     const [images, setImages] = useState([]);
-    const navigation = useNavigate()
+    const navigation = useNavigate();
+    const keyImage = uuidv4();
+
+
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
-        console.log(imageList, addUpdateIndex);
+        let photo = imageList[0].file;
+        let photoUrl = "";
+
+        try {
+            photoUrl = URL.createObjectURL(photo);
+        } catch (e) {
+            console.log(e);
+        }
+
+        setUser(prev => ({
+            ...prev,
+            file: photo,
+            imageTemp: photoUrl
+        }))
+
         setImages(imageList);
     };
 
@@ -18,6 +50,40 @@ const Profile = () =>{
         const idShop = "25327891";
         navigation(`/purchaseOrder/${idShop}`)
     }
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setUser(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const saveUser = (e) => {
+        e.preventDefault();
+        updateUser(sessionUser.user.id, user, dispatch)
+        .then (res => {
+            if(res.status == 200){
+                window.localStorage.setItem("token", res.data.token);
+                navigation('/');
+            }
+            else{
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    openMessage:{
+                        open: true,
+                        message: "Errores al actualizar usuario"
+                    }
+                });
+            }
+        })
+    }
+
+    useEffect( () => {
+        if(sessionUser){
+            setUser(sessionUser.user)
+        }
+    }, [sessionUser])
 
     return (
         <Container className="container-mt">
@@ -30,6 +96,7 @@ const Profile = () =>{
                     className="form"
                     >
                         <ImageUploading
+                            key={keyImage}
                             value={images}
                             onChange={onChange}
                             dataURLKey="data_url"
@@ -43,7 +110,12 @@ const Profile = () =>{
                             // write your building UI
                             <div className="upload__image-wrapper">
                                 <div className="image-item">
-                                    <img className="image-img" src={imageList.length > 0 ? imageList[0].data_url: "https://www.maxphoto.co.uk/media/wysiwyg/help/Upload.png"} alt="" width="100" />
+                                    <img className="image-img" src={
+                                        imageList.length > 0 
+                                        ? imageList[0].data_url
+                                        : 
+                                        (user.image ? user.image : imageDefault)
+                                        } alt="" width="100" />
                                     <button
                                     onClick={onImageUpload}
                                     className="image-button-item"
@@ -59,21 +131,27 @@ const Profile = () =>{
                         variant="outlined"
                         fullWidth
                         className="grid-mb"
-                        value="Paul"
+                        name="name"
+                        value={user.name}
+                        onChange={handleChange}
                         />
                         <TextField 
                         label="Apellidos"
                         variant="outlined"
                         fullWidth
                         className="grid-mb"
-                        value="Flores"
+                        name="lastname"
+                        value={user.lastname}
+                        onChange={handleChange}
                         />
                         <TextField 
                         label="Correo electronico"
                         variant="outlined"
                         fullWidth
                         className="grid-mb"
-                        value="paul_1705@outlook.com"
+                        name="email"
+                        value={user.email}
+                        onChange={handleChange}
                         />
                         <Divider className="divider" />
                         <TextField 
@@ -81,6 +159,7 @@ const Profile = () =>{
                         variant="outlined"
                         fullWidth
                         className="grid-mb"
+                        name="password"
                         />
                         <TextField 
                         label="Confirmar Password"
@@ -91,6 +170,7 @@ const Profile = () =>{
                         <Button
                         variant="contained"
                         color="primary"
+                        onClick={saveUser}
                         >
                             Actualizar
                         </Button>

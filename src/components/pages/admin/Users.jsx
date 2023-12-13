@@ -1,12 +1,43 @@
-import { Button, Container, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Button, Container, Icon, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUsers } from "../../../actions/UserAction";
 
 const Users = () =>{
 
-    const navigation = useNavigate()
+    const navigation = useNavigate();
+    const[requestUsers, setRequestUsers] = useState({
+        pageIndex: 1,
+        pageSize: 3,
+        search: ""
+    });
 
-    const editUser = () =>{
-        const id = "1";
+    const [paginatorUsers, setPaginatorUsers] = useState({
+        count: 0,
+        pageIndex: 0,
+        pageSize: 0,
+        pageCount: 0,
+        data: []
+    });
+
+    const handleChange = (event, value) =>{
+        setRequestUsers(prev => ({
+            ...prev,
+            pageIndex: value
+        }));
+    }
+
+    useEffect(() => {
+        const getListUsers = async () =>{
+            const response =await getUsers(requestUsers);
+            setPaginatorUsers(response.data);
+        }
+
+        getListUsers();
+
+    }, [requestUsers])
+
+    const editUser = (id) =>{
         navigation(`/admin/user/${id}`)
     }
 
@@ -22,64 +53,49 @@ const Users = () =>{
                             <TableCell>ID</TableCell>
                             <TableCell>Usuario</TableCell>
                             <TableCell>Email</TableCell>
-                            <TableCell>Admin</TableCell>
+                            <TableCell>Username</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>1</TableCell>
-                            <TableCell>Paul Flores</TableCell>
-                            <TableCell>paul_1705@outlook.com</TableCell>
-                            <TableCell>
-                                <Icon className="iconDelivered">
-                                    check
-                                </Icon>
-                            </TableCell>
-                            <TableCell>
-                                <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={editUser}
-                                >
-                                    <Icon>edit</Icon>
-                                </Button>
-                                <Button
-                                variant="contained"
-                                color="secondary"
-                                >
-                                    <Icon>delete</Icon>
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>2</TableCell>
-                            <TableCell>Vanessa Flores</TableCell>
-                            <TableCell>vanessa@outlook.com</TableCell>
-                            <TableCell>
-                                <Icon className="iconNotDelivered">
-                                    clear
-                                </Icon>
-                            </TableCell>
-                            <TableCell>
-                                <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={editUser}
-                                >
-                                    <Icon>edit</Icon>
-                                </Button>
-                                <Button
-                                variant="contained"
-                                color="secondary"
-                                >
-                                    <Icon>delete</Icon>
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                        {
+                            paginatorUsers.data.map( u => (
+                                <TableRow key={u.id}>
+                                    <TableCell>{u.id}</TableCell>
+                                    <TableCell>{u.name + ' ' + u.lastname}</TableCell>
+                                    <TableCell>{u.email}</TableCell>
+                                    <TableCell>{u.username}</TableCell>
+                                    <TableCell>
+                                        <Icon className="iconDelivered">
+                                            check
+                                        </Icon>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={ () => editUser(u.id)}
+                                        >
+                                            <Icon>edit</Icon>
+                                        </Button>
+                                        <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        >
+                                            <Icon>delete</Icon>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Pagination 
+                count={paginatorUsers.pageCount} 
+                page={paginatorUsers.pageIndex}
+                onChange={handleChange}
+            />
         </Container>
     )
 }
