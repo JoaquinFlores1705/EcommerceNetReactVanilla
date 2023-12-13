@@ -51,7 +51,7 @@ const Product = () => {
                     <Card>
                         <CardMedia 
                         className="media"
-                        image="https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg"
+                        image={p.image ? p.image : "https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg"}
                         title="Mi producto"
                         >
                             <Avatar variant="square" className="price">

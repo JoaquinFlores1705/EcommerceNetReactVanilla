@@ -1,15 +1,96 @@
-import { Avatar, Button, Container, Grid, TextField, Typography } from "@mui/material"
+import { Avatar, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { useEffect } from "react";
 import { useState } from "react";
 import ImageUploading from 'react-images-uploading';
+import { useNavigate, useParams } from "react-router-dom";
+import { getProduct, updateProduct } from "../../../actions/ProductAction";
+import {v4 as uuidv4} from "uuid";
 
 const ProductEdit = () =>{
 
-    const [images, setImages] = useState([])
+    const imageDefault = "https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg";
+
+    const params = useParams();
+
+    const [images, setImages] = useState([]);
+    const [category, setCategory] = useState("");
+    const [brand, setBrand] = useState("");
+    const [product, setProduct] = useState({
+        id: 0,
+        name: "",
+        description: "",
+        stock: 0,
+        brandId:0,
+        categoryId:0,
+        price:0.0,
+        image:"",
+        file:"",
+        imageTemp: null
+    });
+    const navigation = useNavigate();
+
+    const keyImage = uuidv4();
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value)
+    };
+
+    const handleBrandChange = (event) => {
+        setBrand(event.target.value)
+    };
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setProduct(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
         console.log(imageList, addUpdateIndex);
         setImages(imageList);
+
+        let photo = imageList[0].file;
+        let photoUrl = "";
+        try {
+            photoUrl = URL.createObjectURL(photo)
+        } catch (e) {
+            console.log(e)
+        }
+        setProduct(prev => ({
+            ...prev,
+            file: photo,
+            imageTemp: photoUrl
+        }))
     };
+
+    const saveProduct = async () => {
+        const id = params.id;
+        product.categoryId = category;
+        product.brandId = brand;
+
+        const result = await updateProduct(id, product);
+        console.log(result);
+
+        navigation("/admin/productList");
+    }
+
+    useEffect(() => {
+
+        const id = params.id;
+
+        const getProductAsync = async()=>{
+            const response = await getProduct(id);
+            setProduct(response.data);
+            setCategory(response.data.categoryId);
+            setBrand(response.data.brandId);
+        }
+        
+        getProductAsync();
+
+    }, [])
 
     return(
         <Container className="container-mt">
@@ -30,7 +111,9 @@ const ProductEdit = () =>{
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            value="Producto 1"
+                            value={product.name}
+                            name="name"
+                            onChange={handleChange}
                         />
                         <TextField 
                             label="Precio"
@@ -40,18 +123,11 @@ const ProductEdit = () =>{
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            value={9.99}
+                            value={product.price}
+                            name="price"
+                            onChange={handleChange}
                         />
-                        <TextField 
-                            label="Marca"
-                            variant="outlined"
-                            fullWidth
-                            className="grid-mb"
-                            InputLabelProps={{
-                                shrink: true
-                            }}
-                            value="Vaxi"
-                        />
+                        
                         <TextField 
                             label="Stock"
                             variant="outlined"
@@ -60,7 +136,9 @@ const ProductEdit = () =>{
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            value={15}
+                            value={product.stock}
+                            name="stock"
+                            onChange={handleChange}
                         />
                         <TextField 
                             label="Descripcion"
@@ -72,13 +150,60 @@ const ProductEdit = () =>{
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            value="Casaca grande para salir de fiesta y divertise mucho mucho mucho"
+                            value={product.description}
+                            name="description"
+                            onChange={handleChange}
                         />
+                        <FormControl className="form-control">
+                            <InputLabel id="brand-select-label">
+                                Marca
+                            </InputLabel>
+                            <Select
+                            labelId="brand-select-label"
+                            id="brand-select"
+                            value={brand}
+                            onChange={handleBrandChange}
+                            >
+                                <MenuItem value={1}>
+                                    Nike
+                                </MenuItem>
+                                <MenuItem value={2}>
+                                    Adidas
+                                </MenuItem>
+                                <MenuItem value={3}>
+                                    Maldiva
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl className="form-control">
+                            <InputLabel id="category-select-label">
+                                Categoria
+                            </InputLabel>
+                            <Select
+                            labelId="category-select-label"
+                            id="category-select"
+                            value={category}
+                            onChange={handleCategoryChange}
+                            >
+                                <MenuItem value={1}>
+                                    Verano
+                                </MenuItem>
+                                <MenuItem value={2}>
+                                    Invierno
+                                </MenuItem>
+                                <MenuItem value={3}>
+                                    Primavera
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                        
                         <Grid container spacing={2}>
                             <Grid item sm={6} xs={12}>
                                 <ImageUploading
                                     value={images}
                                     onChange={onChange}
+                                    key={keyImage}
                                     dataURLKey="data_url"
                                     acceptType={["jpg","png","jpeg","gif"]}
                                     maxFileSize={5242880}
@@ -104,13 +229,19 @@ const ProductEdit = () =>{
                                 <Avatar 
                                 variant="square"
                                 className="avatar_product"
-                                src="https://i.pinimg.com/originals/84/f4/35/84f4353540d1933fae6cbca0c2b266f5.jpg"
+                                src={
+                                    product.imageTemp
+                                    ?
+                                    product.imageTemp
+                                    :
+                                    (product.image? product.image : imageDefault)}
                                 />
                             </Grid>
                         </Grid>
                         <Button
                         variant="contained"
                         color="primary"
+                        onClick={saveProduct}
                         >
                             Actualizar
                         </Button>
